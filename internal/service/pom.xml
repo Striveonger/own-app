@@ -56,6 +56,11 @@
 
         <dependency>
             <groupId>com.striveonger.common</groupId>
+            <artifactId>own-llm</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.striveonger.common</groupId>
             <artifactId>own-test</artifactId>
             <scope>test</scope>
         </dependency>

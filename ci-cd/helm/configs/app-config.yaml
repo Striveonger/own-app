@@ -1,8 +1,8 @@
 logging:
   level:
-    root: info
+    root: debug
   file:
-    path: /var/log/own-open-apis
+    path: /var/log/own/example-app
 
 management:
   endpoints:
@@ -18,6 +18,21 @@ management:
           include: active
         readiness:
           include: ready
+
+spring:
+  application:
+    name: own-example-app
+  ai:
+    openai:
+      base-url: "https://api.siliconflow.cn"
+      api-key: "${SF_API_KEY}"
+      chat:
+        completions-path: "/v1/chat/completions"
+        options:
+          temperature: 0.85
+          # model: "Qwen/Qwen3-8B"
+          model: "Qwen/Qwen3-32B"
+          # model: "Qwen/Qwen3-235B-A22B"
 
 own:
   example-app:

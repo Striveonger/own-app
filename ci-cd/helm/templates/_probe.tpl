@@ -7,7 +7,7 @@ httpGet:
   port: {{ .Values.app.port }}
 initialDelaySeconds: 5
 failureThreshold: 3
-periodSeconds: 15
+periodSeconds: 60
 timeoutSeconds: 10
 {{- end -}}
 
@@ -16,8 +16,8 @@ timeoutSeconds: 10
 httpGet:
   path: /actuator/health/readiness
   port: {{ .Values.app.port }}
-initialDelaySeconds: 45
-failureThreshold: 3
-periodSeconds:  60
+initialDelaySeconds: 15
+failureThreshold: 5
+periodSeconds:  30
 timeoutSeconds:  10
 {{- end -}}

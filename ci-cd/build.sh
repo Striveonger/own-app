@@ -26,7 +26,7 @@ docker rmi striveonger/own-example-app:$(cat ./ci-cd/VERSION)
 # build image
 docker build -f ./ci-cd/docker/Dockerfile -t striveonger/own-example-app:$(cat ./ci-cd/VERSION) .
 
-# docker push docker.io/striveonger/own-open-apis:$(cat ./ci-cd/VERSION)
+# docker push docker.io/striveonger/own-example-app:$(cat ./ci-cd/VERSION)
 
 # package helm
 helm package ci-cd/helm
@@ -38,6 +38,7 @@ helm show values ci-cd/helm > ci-cd/package/values.yaml
 helm upgrade --install own-example-app ci-cd/package/own-example-app-$(cat ./ci-cd/VERSION).tgz \
       --values ci-cd/package/values.yaml \
       --create-namespace --namespace own \
-      --set app.config.applicationYaml.own.example-app.storage.memory.max-rows=3
+      --set app.config.applicationYaml.own.example-app.storage.memory.max-rows=3 \
+      --set env[1].value=$SF_API_KEY
 
 popd || exit

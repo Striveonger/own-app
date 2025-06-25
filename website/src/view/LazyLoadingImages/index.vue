@@ -1,15 +1,15 @@
 <template>
     <div class="main-container">
         <div v-for="item in items" :key="item.name">
-            <img class="lazy" src="" :alt="item.content" :data-src="item.imageUrl" />
-            <span>{{item.name}}</span>
+            <img class="lazy" src="" :alt="item.content" :data-src="item.imageUrl"/>
+            <span>{{ item.name }}</span>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, Ref, nextTick } from "vue";
-import { Dot, DotType } from "@/entity/Dot";
+import {ref, Ref, nextTick} from "vue";
+import {Dot, DotType} from "@/entity/Dot";
 
 // 初始化数据
 const items: Ref<Array<Dot>> = ref([]);
@@ -25,7 +25,7 @@ for (let i = 1; i <= 1000; i++) {
 nextTick(() => {
     // 开始设置懒加载
     const images = document.querySelectorAll('.lazy');
-    
+
     // 定义一个观察器
     const callback = (entries) => {
         // 遍历所有被观察的元素
@@ -60,6 +60,7 @@ img {
     height: 300px;
     border: 1px solid black;
 }
+
 .main-container {
     width: 100%;
     height: 100%;

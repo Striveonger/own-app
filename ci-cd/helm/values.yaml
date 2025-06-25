@@ -11,7 +11,7 @@ app:
     cpu: "2"
     memory: "256Mi"
   log:
-    path: "/var/log/"
+    path: "/var/log/own/example-app"
   ingress:
     enabled: true
     path: "/own/"
@@ -29,3 +29,5 @@ app:
 env:
   - name: SPRING_PROFILES_ACTIVE
     value: "dev"
+  - name: SF_API_KEY
+    value: "sk-xyz"

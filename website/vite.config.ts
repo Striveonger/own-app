@@ -15,9 +15,14 @@ export default defineConfig({
     server: {
         open: false,
         port: 9527,
-        host: '0.0.0.0',
+        host: '10.13.147.1',
         proxy: {
-
+            '/api': {
+                target: 'http://10.13.147.1:18081',
+                changeOrigin: true,
+                // secure: false,
+                // rewrite: (path) => path.replace(/^\/api/, '')
+            }
         }
     },
     resolve: {

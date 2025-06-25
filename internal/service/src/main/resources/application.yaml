@@ -4,8 +4,6 @@ server:
     context-path: /
 
 spring:
-  application:
-    name: own-open-apis
   config:
     import:
       - file:@config.folder.path@/app-config.yaml
