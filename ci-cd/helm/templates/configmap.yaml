@@ -1,0 +1,21 @@
+{{ $app := "appConfig"}}
+{{ $chartValues := dict "app-config" ( kebabcase  $app ) }}
+{{ $_ := set . "chartValues" $chartValues }}
+
+{{- $appConfigYaml := .Files.Get "configs/app-config.yaml" | fromYaml }}
+{{- if not $appConfigYaml }}
+  {{ fail "Failed to load app-config.yaml" }}
+{{- end }}
+
+{{- $mergeAppConfigYaml := mergeOverwrite $appConfigYaml .Values.app.config.applicationYaml }}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "own-example-app.name" . }}-app-config-map
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "own-example-app.labels" . | indent 4 }}
+data:
+  app-config.yaml: |-
+{{ toYaml $mergeAppConfigYaml | indent 4  }}

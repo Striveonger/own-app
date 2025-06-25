@@ -1,0 +1,16 @@
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: {{ include "own-example-app.name" . }}-service
+  labels:
+{{ include "own-example-app.labels" .  | indent 4 }}
+spec:
+  type: "ClusterIP"
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: {{ .Values.app.port }}
+  sessionAffinity: "ClientIP"
+  selector:
+{{ include "own-example-app.selectorLabels" .  | indent 4 }}

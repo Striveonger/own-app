@@ -1,0 +1,26 @@
+logging:
+  level:
+    root: info
+  file:
+    path: /var/log/own-open-apis
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: active
+        readiness:
+          include: ready
+
+own:
+  example-app:
+    storage:
+      memory:
+        max-rows: 10

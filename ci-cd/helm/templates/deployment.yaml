@@ -1,0 +1,45 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: "{{ include "own-example-app.name" . }}-deployment"
+  labels:
+{{ include "own-example-app.labels" .  | indent 4 }}
+spec:
+  replicas: {{ .Values.app.replicaCount }}
+  selector:
+    matchLabels:
+{{ include "own-example-app.selectorLabels" .  | indent 6 }}
+  template:
+    metadata:
+      namespace: "{{ .Release.Namespace }}"
+      name: "{{ include "own-example-app.name" . }}"
+      labels:
+{{ include "own-example-app.labels" .  | indent 8 }}
+    spec:
+      restartPolicy: "Always"
+      containers:
+        - name: "{{ include "own-example-app.name" . }}"
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+          imagePullPolicy: "{{.Values.app.image.pullPolicy }}"
+          resources:
+            limits:
+              cpu: "{{ .Values.app.resources.cpu }}"
+              memory: "{{ .Values.app.resources.memory }}"
+            requests:
+              cpu: "{{ .Values.app.resources.cpu }}"
+              memory: "{{ .Values.app.resources.memory }}"
+          ports:
+            - containerPort: {{ .Values.app.port }}
+              protocol: "TCP"
+          livenessProbe:
+{{ include "common.probe.liveness" . | indent 12 }}
+          readinessProbe:
+{{ include "common.probe.readiness" . | indent 12}}
+          env:
+{{- toYaml .Values.env | nindent 12 }}
+          volumeMounts:
+{{ include "common.volumeMounts" . | indent 12}}
+      volumes:
+{{ include "common.volumes" . | indent 8}}

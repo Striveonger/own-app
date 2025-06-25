@@ -1,0 +1,16 @@
+# Helm Chart API 版本 (v2 支持模板继承等功能)
+apiVersion: "v2"
+# Chart 名称（应用标识）
+name: "own-example-app"
+# 维护者信息
+maintainers:
+  - name: "Striveonger"
+    email: "striveonger@163.com"
+# Chart 描述（建议包含应用功能说明）
+description: "A Helm chart for Kubernetes"
+# 资源类型（application 或 library）
+type: "application"
+# Chart 版本（遵循语义化版本规范）
+version: "1.0.0"
+# 应用版本（对应容器镜像版本）
+appVersion: "1.0.0"

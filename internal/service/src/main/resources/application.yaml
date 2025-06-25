@@ -1,0 +1,11 @@
+server:
+  port: 18081
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: own-open-apis
+  config:
+    import:
+      - file:@config.folder.path@/app-config.yaml

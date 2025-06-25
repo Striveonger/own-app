@@ -1,0 +1,35 @@
+{{- if .Values.app.ingress.enabled -}}
+# 创建网关转发的中间件
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ include "own-example-app.name" . }}-gateway-forwarder
+  namespace: {{ .Release.Namespace }}
+spec:
+  replacePathRegex:
+    regex: "^/own(/.*)"
+    replacement: "$1"
+#  stripPrefix:
+#    prefixes:
+#      - "/own/"
+#    forceSlash: false
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "own-example-app.name" . }}-ingress
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "own-example-app.labels" .  | indent 4 }}
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: PathPrefix(`{{ .Values.app.ingress.path }}`)
+      kind: Rule
+      middlewares:
+        - name: {{ include "own-example-app.name" . }}-gateway-forwarder
+      services:
+        - name: {{ include "own-example-app.name" . }}-service
+          port: 80
+{{- end -}}
