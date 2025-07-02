@@ -20,12 +20,12 @@ import java.util.Objects;
  * @since 2025-04-30 16:37
  */
 @Service
-public class MemoryStorageService {
-    private final Logger log = LoggerFactory.getLogger(MemoryStorageService.class);
+public class KvStorageService {
+    private final Logger log = LoggerFactory.getLogger(KvStorageService.class);
 
     private final LRUStorage<StorageDTO> storage;
 
-    public MemoryStorageService(@Value("${own.example-app.storage.memory.max-rows:1000}") Integer maxRows) {
+    public KvStorageService(@Value("${own.example-app.storage.memory.max-rows:1000}") Integer maxRows) {
         this.storage = new LRUStorage<>(maxRows);
     }
 
@@ -92,9 +92,5 @@ public class MemoryStorageService {
             return Result.status(ResultStatus.NOT_FOUND);
         }
     }
-
-
-
-
 
 }

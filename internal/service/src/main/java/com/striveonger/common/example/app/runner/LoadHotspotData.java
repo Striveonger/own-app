@@ -1,7 +1,7 @@
 package com.striveonger.common.example.app.runner;
 
 import com.striveonger.common.core.thread.ThreadKit;
-import com.striveonger.common.example.app.service.MemoryStorageService;
+import com.striveonger.common.example.app.service.KvStorageService;
 import com.striveonger.common.third.actuator.constant.ServiceStatus;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ public class LoadHotspotData implements CommandLineRunner {
     private final Logger log = LoggerFactory.getLogger(LoadHotspotData.class);
 
     @Resource
-    private MemoryStorageService service;
+    private KvStorageService service;
 
     @Override
     public void run(String... args) throws Exception {

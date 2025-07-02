@@ -1,7 +1,7 @@
 package com.striveonger.common.example.app.web.controller;
 
 import com.striveonger.common.core.result.Result;
-import com.striveonger.common.example.app.service.MemoryStorageService;
+import com.striveonger.common.example.app.service.KvStorageService;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ public class MemoryStorageController {
     private final Logger log = LoggerFactory.getLogger(MemoryStorageController.class);
 
     @Resource
-    private MemoryStorageService service;
+    private KvStorageService service;
 
     @PostMapping("/api/v1/storage/{key}")
     public Result save(@PathVariable String key, @RequestBody Map<String, String> data) {
