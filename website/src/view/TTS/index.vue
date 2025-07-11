@@ -1,6 +1,6 @@
 <template>
-    <h2>TTS - Demo</h2>
     <div class="container">
+        <h2>TTS - Demo</h2>
         <el-row>
             <!-- 输入框 -->
             <el-input v-model="text" type="textarea" :rows="5" placeholder="请输入文字"/>
@@ -20,8 +20,6 @@
                 <!-- 播放 -->
                 <el-button :icon="VideoPlay" circle @click="submitTrigger"/>
             </el-col>
-
-
         </el-row>
     </div>
 </template>
@@ -72,18 +70,16 @@ const options = [
 
 const speed = ref(40);
 
-const key = ref('');
-
 const submitTrigger = () => {
     let audio = new AudioGenerateDTO();
     audio.text = text.value;
     audio.voice = voice.value;
     audio.speed = speedFormatTooltip(speed.value);
-    submit(audio).then(s => {
+    submit(audio).then(key => {
         // 创建播放音频
-        let url = `/api/v1/audio/play?key=${s}`;
-        console.log('url: ', url);
-        let audio = new Audio( url);
+        let url = `/api/v1/audio/play?key=${key}`;
+        console.log('audio play url: ', url);
+        let audio = new Audio(url);
         audio.play();
     });
 };
@@ -91,8 +87,6 @@ const submitTrigger = () => {
 const speedFormatTooltip = (val: number) => {
     return val / 40;
 }
-
-
 
 </script>
 
