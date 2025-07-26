@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <h2>TTS - Demo</h2>
+        <!-- <el-divider /> -->
         <el-row>
             <!-- 输入框 -->
             <el-input v-model="text" type="textarea" :rows="5" placeholder="请输入文字"/>
@@ -28,6 +29,7 @@
 import {ref} from 'vue';
 import {VideoPlay} from '@element-plus/icons-vue'
 import {AudioGenerateDTO, submit} from "@/view/TTS/index.ts";
+import {ElNotification} from "element-plus";
 
 const text = ref('你好呀~');
 
@@ -81,6 +83,16 @@ const submitTrigger = () => {
         console.log('audio play url: ', url);
         let audio = new Audio(url);
         audio.play();
+    }).catch((e) => {
+        console.log('audio play error: ', e);
+        ElNotification({
+            title: '播放失败',
+            message: '提交播放信息失败, 请稍后再试',
+            type: 'error',
+            position: 'bottom-right',
+            offset: 0,
+            showClose: false
+        });
     });
 };
 
