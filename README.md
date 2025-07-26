@@ -1,2 +1,2 @@
-# own-example-app
-自己的一些示例代码
+# own-app
+自己的一个小应用
