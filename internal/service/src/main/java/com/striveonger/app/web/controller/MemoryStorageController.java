@@ -1,7 +1,7 @@
-package com.striveonger.common.example.app.web.controller;
+package com.striveonger.app.web.controller;
 
 import com.striveonger.common.core.result.Result;
-import com.striveonger.common.example.app.service.KvStorageService;
+import com.striveonger.app.service.KvStorageService;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

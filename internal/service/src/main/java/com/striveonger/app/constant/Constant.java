@@ -1,4 +1,4 @@
-package com.striveonger.common.example.app.constant;
+package com.striveonger.app.constant;
 
 /**
  * @author Mr.Lee

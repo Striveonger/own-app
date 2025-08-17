@@ -1,4 +1,4 @@
-package com.striveonger.common.example.app.storage;
+package com.striveonger.app.storage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

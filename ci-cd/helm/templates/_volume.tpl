@@ -1,11 +1,11 @@
 {{- define "common.volumes" -}}
 - name: app-logs
   hostPath:
-    path: /var/logs/own/example-app
+    path: /var/logs/own/app
     type: "DirectoryOrCreate"
 - name: app-config
   configMap:
-    name: {{ include "own-example-app.name" . }}-app-config-map
+    name: {{ include "own-app.name" . }}-config-map
 {{- end -}}
 
 {{- define "common.volumeMounts" -}}

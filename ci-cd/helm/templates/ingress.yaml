@@ -3,7 +3,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
-  name: {{ include "own-example-app.name" . }}-gateway-forwarder
+  name: {{ include "own-app.name" . }}-gateway-forwarder
   namespace: {{ .Release.Namespace }}
 spec:
   replacePathRegex:
@@ -17,10 +17,10 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: {{ include "own-example-app.name" . }}-ingress
+  name: {{ include "own-app.name" . }}-ingress
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "own-example-app.labels" .  | indent 4 }}
+{{ include "own-app.labels" .  | indent 4 }}
 spec:
   entryPoints:
     - web
@@ -28,8 +28,8 @@ spec:
     - match: PathPrefix(`{{ .Values.app.ingress.path }}`)
       kind: Rule
       middlewares:
-        - name: {{ include "own-example-app.name" . }}-gateway-forwarder
+        - name: {{ include "own-app.name" . }}-gateway-forwarder
       services:
-        - name: {{ include "own-example-app.name" . }}-service
+        - name: {{ include "own-app.name" . }}-service
           port: 80
 {{- end -}}

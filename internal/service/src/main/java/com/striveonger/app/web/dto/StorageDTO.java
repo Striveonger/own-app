@@ -1,4 +1,4 @@
-package com.striveonger.common.example.app.web.dto;
+package com.striveonger.app.web.dto;
 
 import java.time.LocalDateTime;
 

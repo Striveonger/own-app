@@ -1,7 +1,7 @@
 # Helm Chart API 版本 (v2 支持模板继承等功能)
 apiVersion: "v2"
 # Chart 名称（应用标识）
-name: "own-example-app"
+name: "own-app"
 # 维护者信息
 maintainers:
   - name: "Striveonger"

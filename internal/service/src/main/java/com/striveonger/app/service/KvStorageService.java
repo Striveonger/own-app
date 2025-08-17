@@ -1,9 +1,9 @@
-package com.striveonger.common.example.app.service;
+package com.striveonger.app.service;
 
 import com.striveonger.common.core.constant.ResultStatus;
 import com.striveonger.common.core.result.Result;
-import com.striveonger.common.example.app.storage.LRUStorage;
-import com.striveonger.common.example.app.web.dto.StorageDTO;
+import com.striveonger.app.storage.LRUStorage;
+import com.striveonger.app.web.dto.StorageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

@@ -2,7 +2,7 @@ app:
   port: 18081
   replicaCount: 1
   image:
-    repository: "striveonger/own-example-app"
+    repository: "striveonger/own-app"
     tag: "1.0.0"
     pullPolicy: "IfNotPresent"
   probe:
@@ -11,7 +11,7 @@ app:
     cpu: "2"
     memory: "256Mi"
   log:
-    path: "/var/log/own/example-app"
+    path: "/var/log/own/app"
   ingress:
     enabled: true
     path: "/own/"
@@ -21,7 +21,7 @@ app:
         level:
           root: info
       own:
-        example-app:
+        app:
           storage:
             memory:
               max-rows: 10

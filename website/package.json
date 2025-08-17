@@ -1,5 +1,5 @@
 {
-    "name": "own-open-api",
+    "name": "own-app",
     "description": "一个基于 Vue 3 + Vite + TypeScript + Pinia + Vue Router + Bootstrap 5 的项目",
     "private": true,
     "version": "1.0.0",

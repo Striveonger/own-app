@@ -1,7 +1,5 @@
-package com.striveonger.common.example.app.web.controller;
+package com.striveonger.app.web.controller;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.striveonger.common.core.Jackson;
 import com.striveonger.common.core.KeyGen;
 import com.striveonger.common.core.constant.ResultStatus;
@@ -9,7 +7,7 @@ import com.striveonger.common.core.exception.CustomException;
 import com.striveonger.common.core.result.Result;
 import com.striveonger.common.core.thread.ThreadKit;
 import com.striveonger.common.core.thread.ThreadPool;
-import com.striveonger.common.example.app.web.dto.AudioGenerateDTO;
+import com.striveonger.app.web.dto.AudioGenerateDTO;
 import com.striveonger.common.web.holder.WebHolder;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;

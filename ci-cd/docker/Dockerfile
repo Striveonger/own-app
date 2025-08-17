@@ -25,7 +25,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 WORKDIR /opt/app
 
-COPY internal/service/target/own-example-app.jar /opt/app/app.jar
+COPY internal/service/target/own-app.jar /opt/app/app.jar
 COPY ci-cd/docker/app.sh /opt/app/app.sh
 
 ENV JAVA_HOME=/opt/java
