@@ -1,5 +1,8 @@
 ci-cd/package/*
-node_modules
+.kiro/
+dist/
+node_modules/
+
 .DS_Store
 .env
 .env.local

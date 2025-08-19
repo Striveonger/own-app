@@ -15,30 +15,44 @@ pushd "${APP_WORKSHOP}" || exit
 # build service
 mvn -f internal/service/pom.xml clean package -DskipTests -P k8s
 
-# --------------------------------------------------------------------------------------------
-# uninstall helm
-helm uninstall own-app -n own
-# kubectl delete ns own
-# remove image
-docker rmi striveonger/owne-app:$(cat ./ci-cd/VERSION)
+# build ui
+rm -rf website/dist website/node_modules
+pnpm -C website install
+pnpm -C website run build
 
+# --------------------------------------------------------------------------------------------
+# kubectl delete ns own
+
+# uninstall helm
+helm uninstall own-app -n own --wait
+
+# remove image
+docker rmi striveonger/own-app-api:$(cat ./ci-cd/VERSION)
+docker rmi striveonger/own-app-ui:$(cat ./ci-cd/VERSION)
 # --------------------------------------------------------------------------------------------
 # build image
-docker build -f ./ci-cd/docker/Dockerfile -t striveonger/own-app:$(cat ./ci-cd/VERSION) .
+docker build -f ./ci-cd/docker/api/Dockerfile -t striveonger/own-app-api:$(cat ./ci-cd/VERSION) .
+docker build -f ./ci-cd/docker/ui/Dockerfile -t striveonger/own-app-ui:$(cat ./ci-cd/VERSION) .
 
-# docker push docker.io/striveonger/own-app:$(cat ./ci-cd/VERSION)
+# docker push docker.io/striveonger/own-app-api:$(cat ./ci-cd/VERSION)
+# docker push docker.io/striveonger/own-app-ui:$(cat ./ci-cd/VERSION)
 
 # package helm
-helm package ci-cd/helm
-mv own-app-$(cat ./ci-cd/VERSION).tgz ci-cd/package
-helm show values ci-cd/helm > ci-cd/package/values.yaml
+# helm package ci-cd/helm
+# mv own-app-$(cat ./ci-cd/VERSION).tgz ci-cd/package
+# helm show values ci-cd/helm > ci-cd/package/values.yaml
 
 # deploy
-# helm uninstall own-app -n own
-helm upgrade --install own-app ci-cd/package/own-app-$(cat ./ci-cd/VERSION).tgz \
-      --values ci-cd/package/values.yaml \
-      --create-namespace --namespace own \
-      --set app.config.applicationYaml.own.example-app.storage.memory.max-rows=3 \
-      --set env[1].value=$SF_API_KEY
+# helm upgrade --install own-app ci-cd/package/own-app$(cat ./ci-cd/VERSION).tgz \
+#      --values ci-cd/package/values.yaml \
+#      --create-namespace --namespace own \
+#      --set app.config.applicationYaml.own.example-app.storage.memory.max-rows=3 \
+#      --set env[1].value=$SF_API_KEY
+
+helm upgrade --install own-app ci-cd/helm \
+    --create-namespace --namespace own \
+    --values ci-cd/helm/values.yaml \
+    --set app.config.applicationYaml.own.example-app.storage.memory.max-rows=5 \
+    --set env[1].value=$SF_API_KEY
 
 popd || exit
