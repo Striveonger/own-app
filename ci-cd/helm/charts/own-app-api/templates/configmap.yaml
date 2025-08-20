@@ -12,10 +12,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "own-app.name" . }}-config-map
+  name: {{ include "own-app-api.name" . }}-config-map
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "own-app.labels" . | indent 4 }}
+{{ include "own-app-api.labels" . | indent 4 }}
 data:
   app-config.yaml: |-
 {{ toYaml $mergeAppConfigYaml | indent 4  }}

@@ -2,11 +2,11 @@ logging:
   level:
     root: debug
   file:
-    path: /var/log/own/example-app
+    path: /var/log/own/app
 
 spring:
   application:
-    name: own-example-app
+    name: own-app
   ai:
     openai:
       base-url: "https://api.siliconflow.cn"

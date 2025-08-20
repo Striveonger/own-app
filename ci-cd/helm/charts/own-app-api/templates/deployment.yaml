@@ -3,24 +3,24 @@ apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
   namespace: "{{ .Release.Namespace }}"
-  name: "{{ include "own-app.name" . }}-deployment"
+  name: "{{ include "own-app-api.name" . }}-deployment"
   labels:
-{{ include "own-app.labels" .  | indent 4 }}
+{{ include "own-app-api.labels" .  | indent 4 }}
 spec:
   replicas: {{ .Values.app.replicaCount }}
   selector:
     matchLabels:
-{{ include "own-app.selectorLabels" .  | indent 6 }}
+{{ include "own-app-api.selectorLabels" .  | indent 6 }}
   template:
     metadata:
       namespace: "{{ .Release.Namespace }}"
-      name: "{{ include "own-app.name" . }}"
+      name: "{{ include "own-app-api.name" . }}"
       labels:
-{{ include "own-app.labels" .  | indent 8 }}
+{{ include "own-app-api.labels" .  | indent 8 }}
     spec:
       restartPolicy: "Always"
       containers:
-        - name: "{{ include "own-app.name" . }}"
+        - name: "{{ include "own-app-api.name" . }}"
           image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
           imagePullPolicy: "{{.Values.app.image.pullPolicy }}"
           resources:
