@@ -9,8 +9,9 @@ spec:
   type: "ClusterIP"
   ports:
     - protocol: "TCP"
+      name: "http"
       port: 80
-      targetPort: {{ .Values.app.port }}
+      targetPort: {{ .Values.port }}
   sessionAffinity: "ClientIP"
   selector:
 {{ include "own-app-api.selectorLabels" .  | indent 4 }}

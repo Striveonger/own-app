@@ -1,6 +1,6 @@
 logging:
   level:
-    root: debug
+    root: info
   file:
     path: /var/log/own/app
 

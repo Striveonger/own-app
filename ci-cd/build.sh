@@ -52,7 +52,7 @@ docker build -f ./ci-cd/docker/ui/Dockerfile -t striveonger/own-app-ui:$(cat ./c
 helm upgrade --install own-app ci-cd/helm \
     --create-namespace --namespace own \
     --values ci-cd/helm/values.yaml \
-    --set app.config.applicationYaml.own.example-app.storage.memory.max-rows=5 \
-    --set env[1].value=$SF_API_KEY
+    --set own-app-api.config.applicationYaml.own.app.storage.memory.max-rows=3 \
+    --set own-app-api.env[1].value=$SF_API_KEY
 
 popd || exit

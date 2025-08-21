@@ -7,7 +7,7 @@
   {{ fail "Failed to load app-config.yaml" }}
 {{- end }}
 
-{{- $mergeAppConfigYaml := mergeOverwrite $appConfigYaml .Values.app.config.applicationYaml }}
+{{- $mergeAppConfigYaml := mergeOverwrite $appConfigYaml .Values.config.applicationYaml }}
 
 apiVersion: v1
 kind: ConfigMap

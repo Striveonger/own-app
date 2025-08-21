@@ -4,7 +4,7 @@
 {{- define "common.probe.liveness" }}
 httpGet:
   path: /actuator/health/liveness
-  port: {{ .Values.app.port }}
+  port: {{ .Values.port }}
 initialDelaySeconds: 5
 failureThreshold: 3
 periodSeconds: 60
@@ -15,7 +15,7 @@ timeoutSeconds: 10
 {{- define "common.probe.readiness" }}
 httpGet:
   path: /actuator/health/readiness
-  port: {{ .Values.app.port }}
+  port: {{ .Values.port }}
 initialDelaySeconds: 10
 failureThreshold: 5
 periodSeconds:  10

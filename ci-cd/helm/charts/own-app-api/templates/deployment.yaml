@@ -7,7 +7,7 @@ metadata:
   labels:
 {{ include "own-app-api.labels" .  | indent 4 }}
 spec:
-  replicas: {{ .Values.app.replicaCount }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
 {{ include "own-app-api.selectorLabels" .  | indent 6 }}
@@ -21,17 +21,17 @@ spec:
       restartPolicy: "Always"
       containers:
         - name: "{{ include "own-app-api.name" . }}"
-          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
-          imagePullPolicy: "{{.Values.app.image.pullPolicy }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{.Values.image.pullPolicy }}"
           resources:
             limits:
-              cpu: "{{ .Values.app.resources.cpu }}"
-              memory: "{{ .Values.app.resources.memory }}"
+              cpu: "{{ .Values.resources.cpu }}"
+              memory: "{{ .Values.resources.memory }}"
             requests:
-              cpu: "{{ .Values.app.resources.cpu }}"
-              memory: "{{ .Values.app.resources.memory }}"
+              cpu: "{{ .Values.resources.cpu }}"
+              memory: "{{ .Values.resources.memory }}"
           ports:
-            - containerPort: {{ .Values.app.port }}
+            - containerPort: {{ .Values.port }}
               protocol: "TCP"
           livenessProbe:
 {{ include "common.probe.liveness" . | indent 12 }}

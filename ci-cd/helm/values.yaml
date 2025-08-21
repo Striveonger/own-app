@@ -1,37 +1,25 @@
 own-app-api:
-  app:
-    port: 18081
-    replicaCount: 1
-    image:
-      repository: "striveonger/own-app"
-      tag: "1.0.0"
-      pullPolicy: "IfNotPresent"
-    probe:
-      enabled: true
-    resources:
-      cpu: "2"
-      memory: "256Mi"
-    log:
-      path: "/var/log/own/app"
-    config:
-      applicationYaml:
-        logging:
-          level:
-            root: info
-        own:
-          app:
-            storage:
-              memory:
-                max-rows: 10
+  replicaCount: 1
+  image:
+    repository: "striveonger/own-app"
+    tag: "1.0.0"
+  probe:
+    enabled: true
+  config:
+    applicationYaml:
+      own:
+        app:
+          storage:
+            memory:
+              max-rows: 10
+  env:
+    - name: SPRING_PROFILES_ACTIVE
+      value: "dev"
+    - name: SF_API_KEY
+      value: "sk-xyz"
 
-
-ingress:
-  enabled: true
-  path: "/own/"
-
-
-env:
-  - name: SPRING_PROFILES_ACTIVE
-    value: "dev"
-  - name: SF_API_KEY
-    value: "sk-xyz"
+own-app-ui:
+  replicaCount: 1
+  image:
+    repository: "striveonger/own-app-ui"
+    tag: "1.0.0"

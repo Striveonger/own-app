@@ -5,12 +5,12 @@
     type: "DirectoryOrCreate"
 - name: app-config
   configMap:
-    name: {{ include "own-app.name" . }}-config-map
+    name: {{ include "own-app-api.name" . }}-config-map
 {{- end -}}
 
 {{- define "common.volumeMounts" -}}
 - name: app-logs
-  mountPath: {{.Values.app.log.path | default "/var/log/"}}
+  mountPath: {{.Values.log.path | default "/var/log/"}}
   readOnly: false
 - name: app-config
   mountPath: /opt/app/configs
