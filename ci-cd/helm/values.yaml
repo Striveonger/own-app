@@ -1,7 +1,7 @@
 own-app-api:
   replicaCount: 1
   image:
-    repository: "striveonger/own-app"
+    repository: "striveonger/own-app-api"
     tag: "1.0.0"
   probe:
     enabled: true

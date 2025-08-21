@@ -1,4 +1,4 @@
-FROM nginx:1.27.2
+FROM nginx:1.16.0
 LABEL maintainer="striveonger@163.com"
 LABEL version="1.0.0"
 

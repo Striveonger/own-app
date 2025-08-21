@@ -79,7 +79,7 @@ const submitTrigger = () => {
     audio.speed = speedFormatTooltip(speed.value);
     submit(audio).then(key => {
         // 创建播放音频
-        let url = `/api/v1/audio/play?key=${key}`;
+        let url = import.meta.env.BASE_URL.replace(/\/$/, '') + `/api/v1/audio/play?key=${key}`;
         console.log('audio play url: ', url);
         let audio = new Audio(url);
         audio.play();
