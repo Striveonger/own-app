@@ -44,15 +44,15 @@ docker build -f ./ci-cd/docker/ui/Dockerfile -t striveonger/own-app-ui:$(cat ./c
 
 # deploy
 # helm upgrade --install own-app ci-cd/package/own-app$(cat ./ci-cd/VERSION).tgz \
-#      --values ci-cd/package/values.yaml \
 #      --create-namespace --namespace own \
-#      --set app.config.applicationYaml.own.example-app.storage.memory.max-rows=3 \
-#      --set env[1].value=$SF_API_KEY
+#      --values ci-cd/package/values.yaml \
+#      --set own-app-api.env[1].value=$SF_API_KEY \
+#      --set global.config.app.own.app.storage.memory.max-rows=3
 
 helm upgrade --install own-app ci-cd/helm \
     --create-namespace --namespace own \
     --values ci-cd/helm/values.yaml \
-    --set own-app-api.config.applicationYaml.own.app.storage.memory.max-rows=3 \
-    --set own-app-api.env[1].value=$SF_API_KEY
+    --set own-app-api.env[1].value=$SF_API_KEY \
+    --set global.config.app.own.app.storage.memory.max-rows=3
 
 popd || exit

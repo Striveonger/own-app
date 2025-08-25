@@ -42,4 +42,5 @@ spec:
           volumeMounts:
 {{ include "common.volumeMounts" . | indent 12}}
       volumes:
-{{ include "common.volumes" . | indent 8}}
+{{ include "common.log.volumes" . | indent 8}}
+{{ include "common.app.config.volumes" . | indent 8}}

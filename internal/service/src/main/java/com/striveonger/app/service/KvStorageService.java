@@ -25,7 +25,7 @@ public class KvStorageService {
 
     private final LRUStorage<StorageDTO> storage;
 
-    public KvStorageService(@Value("${own.example-app.storage.memory.max-rows:1000}") Integer maxRows) {
+    public KvStorageService(@Value("${own.app.storage.memory.max-rows:1000}") Integer maxRows) {
         this.storage = new LRUStorage<>(maxRows);
     }
 

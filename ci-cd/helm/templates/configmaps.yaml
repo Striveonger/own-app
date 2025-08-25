@@ -7,12 +7,12 @@
   {{ fail "Failed to load app-config.yaml" }}
 {{- end }}
 
-{{- $mergeAppConfigYaml := mergeOverwrite $appConfigYaml .Values.config.applicationYaml }}
+{{- $mergeAppConfigYaml := mergeOverwrite $appConfigYaml .Values.global.config.app }}
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "own-app-api.name" . }}-config-map
+  name: {{ .Release.Name }}-app-config-map
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "own-app-api.labels" . | indent 4 }}

@@ -22,7 +22,7 @@ spring:
           # model: "Qwen/Qwen3-235B-A22B"
 
 own:
-  example-app:
+  app:
     storage:
       memory:
         max-rows: 10
