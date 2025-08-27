@@ -20,6 +20,9 @@ spring:
           # model: "Qwen/Qwen3-235B-A22B"
 
 own:
+  gateway:
+    auth:
+      token: "${OWN_GATEWAY_TOKEN}"
   app:
     storage:
       memory:

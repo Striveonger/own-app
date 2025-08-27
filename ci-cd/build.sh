@@ -38,21 +38,21 @@ docker build -f ./ci-cd/docker/ui/Dockerfile -t striveonger/own-app-ui:$(cat ./c
 # docker push docker.io/striveonger/own-app-ui:$(cat ./ci-cd/VERSION)
 
 # package helm
-# helm package ci-cd/helm
-# mv own-app-$(cat ./ci-cd/VERSION).tgz ci-cd/package
-# helm show values ci-cd/helm > ci-cd/package/values.yaml
+helm package ci-cd/helm
+mv own-app-$(cat ./ci-cd/VERSION).tgz ci-cd/package
+helm show values ci-cd/helm > ci-cd/package/values.yaml
 
 # deploy
-# helm upgrade --install own-app ci-cd/package/own-app$(cat ./ci-cd/VERSION).tgz \
-#      --create-namespace --namespace own \
-#      --values ci-cd/package/values.yaml \
-#      --set own-app-api.env[1].value=$SF_API_KEY \
-#      --set global.config.app.own.app.storage.memory.max-rows=3
-
-helm upgrade --install own-app ci-cd/helm \
+helm upgrade --install own-app ci-cd/package/own-app-$(cat ./ci-cd/VERSION).tgz \
     --create-namespace --namespace own \
-    --values ci-cd/helm/values.yaml \
-    --set own-app-api.env[1].value=$SF_API_KEY \
-    --set global.config.app.own.app.storage.memory.max-rows=3
+    --values ci-cd/package/values.yaml \
+    --set "own-app-api.env[1].value=$SF_API_KEY" \
+    --set "global.config.app.own.app.storage.memory.max-rows=3"
+
+# helm upgrade --install own-app ci-cd/helm \
+#     --create-namespace --namespace own \
+#     --values ci-cd/helm/values.yaml \
+#     --set "own-app-api.env[1].value=$SF_API_KEY" \
+#     --set "global.config.app.own.app.storage.memory.max-rows=3"
 
 popd || exit
