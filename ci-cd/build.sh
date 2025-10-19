@@ -14,6 +14,7 @@ pushd "${APP_WORKSHOP}" || exit
 
 # build service
 mvn -f internal/service/pom.xml clean package -DskipTests -P k8s
+unzip -o internal/service/target/own-app.jar -d internal/service/target/app/
 
 # build ui
 rm -rf website/dist website/node_modules
@@ -24,7 +25,7 @@ pnpm -C website run build
 # kubectl delete ns own
 
 # uninstall helm
-helm uninstall own-app -n own --wait
+helm uninstall own-app -n apps --wait
 
 # remove image
 docker rmi striveonger/own-app-api:$(cat ./ci-cd/VERSION)
@@ -44,7 +45,7 @@ helm show values ci-cd/helm > ci-cd/package/values.yaml
 
 # deploy
 helm upgrade --install own-app ci-cd/package/own-app-$(cat ./ci-cd/VERSION).tgz \
-    --create-namespace --namespace own \
+    --create-namespace --namespace apps \
     --values ci-cd/package/values.yaml \
     --set "own-app-api.env[1].value=$SF_API_KEY" \
     --set "global.config.app.own.app.storage.memory.max-rows=3"
