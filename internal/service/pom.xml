@@ -63,10 +63,26 @@
             <artifactId>own-actuator</artifactId>
         </dependency>
 
+        <!--<dependency>-->
+        <!--    <groupId>com.striveonger.common</groupId>-->
+        <!--    <artifactId>own-llm</artifactId>-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>com.striveonger.common</groupId>
-            <artifactId>own-llm</artifactId>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-starter-model-openai</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-starter-vector-store-redis</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>com.striveonger.common</groupId>
