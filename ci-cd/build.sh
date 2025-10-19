@@ -35,8 +35,8 @@ docker rmi striveonger/own-app-ui:$(cat ./ci-cd/VERSION)
 docker build -f ./ci-cd/docker/api/Dockerfile -t striveonger/own-app-api:$(cat ./ci-cd/VERSION) .
 docker build -f ./ci-cd/docker/ui/Dockerfile -t striveonger/own-app-ui:$(cat ./ci-cd/VERSION) .
 
-# docker push docker.io/striveonger/own-app-api:$(cat ./ci-cd/VERSION)
-# docker push docker.io/striveonger/own-app-ui:$(cat ./ci-cd/VERSION)
+docker push docker.io/striveonger/own-app-api:$(cat ./ci-cd/VERSION)
+docker push docker.io/striveonger/own-app-ui:$(cat ./ci-cd/VERSION)
 
 # package helm
 helm package ci-cd/helm
