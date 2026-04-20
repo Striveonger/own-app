@@ -1,10 +1,10 @@
-FROM ubuntu:22.04
 # FROM debian:trixie-slim
+FROM ubuntu:22.04
 LABEL maintainer="striveonger@163.com"
 LABEL version="1.0.0"
 
-COPY --from=ubuntu/jre:17_edge /opt/java /opt/java
 # COPY --from=bitnami/java:21 /opt/bitnami/java /opt/java
+COPY --from=ubuntu/jre:17_edge /opt/java /opt/java
 
 # 设置时区变量及符号链接
 ENV TZ=Asia/Shanghai

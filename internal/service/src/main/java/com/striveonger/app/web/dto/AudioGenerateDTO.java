@@ -15,7 +15,7 @@ public class AudioGenerateDTO {
 
     private String voice;
 
-    private Float speed;
+    private Double speed;
 
     public String getText() {
         return text;
@@ -33,11 +33,11 @@ public class AudioGenerateDTO {
         this.voice = voice;
     }
 
-    public float getSpeed() {
+    public double getSpeed() {
         return speed == null ? 1.0f : speed;
     }
 
-    public void setSpeed(float speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 }

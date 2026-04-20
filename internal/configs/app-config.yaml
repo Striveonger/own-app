@@ -26,3 +26,4 @@ own:
     storage:
       memory:
         max-rows: 10
+

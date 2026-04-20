@@ -3,7 +3,7 @@ package com.striveonger.app.web.controller;
 import com.striveonger.common.core.Jackson;
 import com.striveonger.common.core.KeyGen;
 import com.striveonger.common.core.constant.ResultStatus;
-import com.striveonger.common.core.exception.CustomException;
+import com.striveonger.common.core.exception.OwnException;
 import com.striveonger.common.core.result.Result;
 import com.striveonger.common.core.thread.ThreadKit;
 import com.striveonger.common.core.thread.ThreadPool;
@@ -12,11 +12,11 @@ import com.striveonger.common.web.holder.WebHolder;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.audio.tts.TextToSpeechPrompt;
+import org.springframework.ai.audio.tts.TextToSpeechResponse;
 import org.springframework.ai.openai.OpenAiAudioSpeechModel;
 import org.springframework.ai.openai.OpenAiAudioSpeechOptions;
 import org.springframework.ai.openai.api.OpenAiAudioApi;
-import org.springframework.ai.openai.audio.speech.SpeechPrompt;
-import org.springframework.ai.openai.audio.speech.SpeechResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,7 +63,10 @@ public class AudioController {
                         .speed(dto.getSpeed())
                         .build();
                 try {
-                    SpeechResponse response = model.call(new SpeechPrompt(dto.getText(), options));
+                    // tts-prompt
+                    TextToSpeechPrompt prompt = new TextToSpeechPrompt(dto.getText(), options);
+                    // tts-response
+                    TextToSpeechResponse response = model.call(prompt);
                     return response.getResult().getOutput();
                 } catch (Exception e) {
                     log.error("generate audio error", e);
@@ -91,7 +94,7 @@ public class AudioController {
                 log.error("play audio error", e);
             }
         }
-        throw new CustomException(ResultStatus.NOT_FOUND);
+        throw new OwnException(ResultStatus.NOT_FOUND);
     }
 
 }

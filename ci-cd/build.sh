@@ -17,9 +17,9 @@ mvn -f internal/service/pom.xml clean package -DskipTests -P k8s
 unzip -o internal/service/target/own-app.jar -d internal/service/target/app/
 
 # build ui
-rm -rf website/dist website/node_modules
-pnpm -C website install
-pnpm -C website run build
+rm -rf external/website/dist external/website/node_modules
+pnpm -C external/website install
+pnpm -C external/website run build
 
 # --------------------------------------------------------------------------------------------
 # kubectl delete ns own

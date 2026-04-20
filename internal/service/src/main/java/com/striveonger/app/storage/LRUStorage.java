@@ -15,7 +15,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LRUStorage<T> {
     private final Logger log = LoggerFactory.getLogger(LRUStorage.class);
 
-    private int capacity, size;
+    /**
+     * 缓存容量
+     */
+    private final int capacity;
+
+    /**
+     * 缓存大小
+     */
+    private int size;
 
     /**
      * 规则:
