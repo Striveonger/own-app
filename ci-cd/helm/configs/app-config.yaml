@@ -27,3 +27,20 @@ own:
     storage:
       memory:
         max-rows: 10
+  vlog:
+    hot:
+      threshold: 1800
+      decay:
+        base: 0.5
+        half-life-days: 7
+        min-factor: 0.3
+      new-video:
+        days-threshold: 7
+        boost: 1.3
+      weights:
+        viewed-cnt: 2
+        like-cnt: 5
+        comment-cnt: 3
+        author-fans-cnt: 2
+        complete-rate: 4
+        replay-rate: 3

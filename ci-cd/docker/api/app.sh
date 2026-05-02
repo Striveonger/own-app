@@ -9,4 +9,4 @@ APP_PORT=18081
 
 JAVA_OPT="${JAVA_OPT} -Dserver.port=${APP_PORT} -Dloader.path=BOOT-INF/classes:BOOT-INF/lib"
 
-exec ${JAVA_HOME}/bin/java -cp /opt/app ${JAVA_OPT} org.springframework.boot.loader.launch.JarLauncher
+exec java -cp /opt/app ${JAVA_OPT} org.springframework.boot.loader.launch.JarLauncher

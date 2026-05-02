@@ -48,7 +48,7 @@ public class AudioController {
     @PostMapping("/api/v1/audio/submit")
     @ResponseBody
     public Result submit(@RequestBody AudioGenerateDTO dto) {
-        log.info("submit audio: {}", Jackson.toJSONString(dto));
+        log.info("submit audio: {}", Jackson.toString(dto));
         String key = KeyGen.build(dto.getText(), dto.getVoice(), Objects.toString(dto.getSpeed()));
         if (!cache.containsKey(key)) {
             Future<byte[]> future = pool.submit(() -> {

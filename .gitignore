@@ -3,6 +3,8 @@ ci-cd/package/*
 dist/
 node_modules/
 
+.venv/
+.traces/
 .DS_Store
 .env
 .env.local
@@ -38,3 +40,5 @@ target
 *.rar
 *.exe
 *.dll
+.python-version
+__pycache__
