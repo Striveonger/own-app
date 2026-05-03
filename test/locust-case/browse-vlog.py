@@ -12,17 +12,25 @@ Locust 压测脚本
 import random
 import yaml
 from pathlib import Path
-from locust import HttpUser, TaskSet, task, between
-from common.api_client import get_vlog_list
+from locust import HttpUser, TaskSet, task, between, events
+from common.common_tools import load_config
 
 # ==================== 配置加载 ====================
-def load_config():
-    config_file = Path(__file__).parent / "own.config.yaml"
-    with open(config_file, 'r', encoding='utf-8') as f:
-        return yaml.safe_load(f)
-
 CONFIG = load_config()
 BASE_URL = CONFIG['base']['url']
+
+
+# ==================== 测试结束报告 ====================
+@events.quitting.add_listener
+def on_quitting(environment, **kwargs):
+    stats = environment.stats.total
+    print("\n========== 最终测试报告 ==========")
+    print(f"总请求数: {stats.num_requests}")
+    print(f"平均响应时间: {stats.avg_response_time:.2f} 毫秒")
+    print(f"失败率: {stats.fail_ratio * 100:.2f}%")
+    print(f"平均RPS: {stats.total_rps:.2f}")
+    print("===================================")
+
 
 # ==================== 任务集 ====================
 class BrowseVlogTaskSet(TaskSet):
@@ -34,10 +42,10 @@ class BrowseVlogTaskSet(TaskSet):
     @task
     def get_vlog_list(self):
         """获取用户推荐 Vlog 列表"""
-        response = get_vlog_list(BASE_URL, self.user_id)
-        # Locust 自动统计 request/response，无需手动 success()
-        if response.status_code != 200:
-            response.failure(f"HTTP {response.status_code}")
+        self.client.get(
+            f"{BASE_URL}/api/v1/vlog/list",
+            params={"userId": self.user_id, "plan": "B"}
+        )
 
 # ==================== 用户类 ====================
 class BrowseVlogUser(HttpUser):
