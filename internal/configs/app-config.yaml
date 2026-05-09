@@ -5,8 +5,19 @@ logging:
     path: logs
 
 
+server:
+  tomcat:
+    max-connections: 8192        # Tomcat最大连接数，可根据服务器性能调整
+    accept-count: 100            # 接受队列的最大长度
+    max-threads: 200             # 最大工作线程数
+    min-spare-threads: 10        # 最小工作线程数
+    connection-timeout: 20000    # 连接超时时间(毫秒)
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB    # 单个文件最大大小
+      max-request-size: 10MB  # 整个 multipart 请求的最大大小
   application:
     name: own-app
   ai:

@@ -31,7 +31,6 @@ def on_quitting(environment, **kwargs):
     print(f"平均RPS: {stats.total_rps:.2f}")
     print("===================================")
 
-
 # ==================== 任务集 ====================
 class BrowseVlogTaskSet(TaskSet):
     """浏览 Vlog 任务集"""
@@ -42,10 +41,14 @@ class BrowseVlogTaskSet(TaskSet):
     @task
     def get_vlog_list(self):
         """获取用户推荐 Vlog 列表"""
-        self.client.get(
+        response = self.client.get(
             f"{BASE_URL}/api/v1/vlog/list",
             params={"userId": self.user_id, "plan": "B"}
         )
+        assert response.status_code == 200, f"获取用户推荐 Vlog 列表失败，状态码: {response.status_code}"
+        ### 判断data数组是否为空
+        assert response.json()['data'], "data数组为空，响应体中未包含用户推荐 Vlog 列表"
+
 
 # ==================== 用户类 ====================
 class BrowseVlogUser(HttpUser):

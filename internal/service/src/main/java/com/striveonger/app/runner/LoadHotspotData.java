@@ -4,7 +4,6 @@ package com.striveonger.app.runner;
 import java.util.Map;
 
 import com.striveonger.app.service.VlogPoolService;
-import com.striveonger.app.service.impl.VlogPoolServicePlanA;
 import com.striveonger.common.core.Timepiece;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

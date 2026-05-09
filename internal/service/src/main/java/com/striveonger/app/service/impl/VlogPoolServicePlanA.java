@@ -15,10 +15,9 @@ import java.util.Set;
  * @author Mr.Lee
  * @since 2026-04-25 11:21
  */
-@Service
+@Service("vlogPoolServicePlanA")
 public class VlogPoolServicePlanA extends VlogPoolService {
     private final Logger log = LoggerFactory.getLogger(VlogPoolServicePlanA.class);
-
 
     /**
      * 视频池用户已看
@@ -28,8 +27,9 @@ public class VlogPoolServicePlanA extends VlogPoolService {
 
     /**
      * 从视频池中获取用户没看过的视频ID列表
+     *
      * @param userId 用户ID
-     * @param count 需要获取的视频数量
+     * @param count  需要获取的视频数量
      * @return 视频ID列表
      */
     @Override
@@ -52,7 +52,7 @@ public class VlogPoolServicePlanA extends VlogPoolService {
         timepiece.mark("build-recommend-list: " + result.size());
 
         recordUserViewed(userId, result);
-        timepiece.mark("record-user-viewed-vlogs: "+ userId);
+        timepiece.mark("record-user-viewed-vlogs: " + userId);
         timepiece.show();
         return result;
     }
@@ -71,12 +71,11 @@ public class VlogPoolServicePlanA extends VlogPoolService {
     /**
      * 从指定视频池中获取候选视频列表
      *
-     * @param key 视频池Key
-     * @param limit   获取数量上限
+     * @param key   视频池Key
+     * @param limit 获取数量上限
      * @return 候选视频ID列表
      */
     private List<String> getCandidatesFromPool(String key, int limit, Set<String> viewed) {
-        // Iterator<String> iterator = RedisKit.ZSet.iterator(key);
         List<String> ids = RedisKit.ZSet.range(key, 0, -1);
         List<String> result = new ArrayList<>();
         int count = 0;
@@ -93,10 +92,10 @@ public class VlogPoolServicePlanA extends VlogPoolService {
      * 按比例从热门池、新手池、时间线池中选取视频
      * 热门池50%, 新手池30%, 时间线池20%
      *
-     * @param hotList     热门池过滤后视频
-     * @param newList     新手池过滤后视频
+     * @param hotList      热门池过滤后视频
+     * @param newList      新手池过滤后视频
      * @param timelineList 时间线池过滤后视频
-     * @param count       需要返回的视频数量
+     * @param count        需要返回的视频数量
      * @return 最终推荐列表
      */
     private List<String> buildRecommendList(List<String> hotList, List<String> newList, List<String> timelineList, int count) {
@@ -110,7 +109,9 @@ public class VlogPoolServicePlanA extends VlogPoolService {
     private void addFromList(List<String> result, List<String> source, int count) {
         int added = 0;
         for (String vlogId : source) {
-            if (added >= count) break;
+            if (added >= count) {
+                break;
+            }
             if (!result.contains(vlogId)) {
                 result.add(vlogId);
                 added++;
@@ -127,15 +128,11 @@ public class VlogPoolServicePlanA extends VlogPoolService {
      * @param vlogIds 视频ID列表
      */
     private void recordUserViewed(String userId, List<String> vlogIds) {
-        if (vlogIds.isEmpty()) return;
+        if (vlogIds.isEmpty()) {
+            return;
+        }
         String key = VLOG_USER_VIEWED_PREFIX + userId;
         RedisKit.Set.add(key, vlogIds);
-
-        // for (String vlogId : vlogIds) {
-        //     if (isHotVlog(vlogId)) {
-        //         handleHotVlogResurrection(vlogId, userId);
-        //     }
-        // }
     }
 
 }

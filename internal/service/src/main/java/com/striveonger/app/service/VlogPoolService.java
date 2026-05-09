@@ -118,7 +118,7 @@ public abstract class VlogPoolService {
      *
      * @return 视频列表
      */
-    private List<Vlog> getVlogPoolData() {
+    protected List<Vlog> getVlogPoolData() {
         // 真实情况下, 要分页加载的, 这里为了演示, 我就直接模拟数据了.
         List<Vlog> list = new ArrayList<>();
         // 读取classpath:data/vlogs.json文件内容

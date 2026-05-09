@@ -22,11 +22,11 @@ import java.util.Set;
  * 3. 推进偏移量（按实际返回数量）
  *
  * @author Mr.Lee
- * @since 2026-05-02
+ * @since 2026-05-04
  */
-@Service("vlogPoolServicePlanB")
-public class VlogPoolServicePlanB extends VlogPoolService {
-    private final Logger log = LoggerFactory.getLogger(VlogPoolServicePlanB.class);
+@Service("vlogPoolServicePlanC")
+public class VlogPoolServicePlanC extends VlogPoolService {
+    private final Logger log = LoggerFactory.getLogger(VlogPoolServicePlanC.class);
 
     /**
      * 用户已看过的视频前缀
@@ -37,6 +37,11 @@ public class VlogPoolServicePlanB extends VlogPoolService {
      * 用户偏移量前缀
      */
     private static final String VLOG_USER_OFFSET_PREFIX = "vlog:user:offset:";
+
+    /**
+     * 视频ID映射表(VLOG_ID_STRING -> VLOG_ID_LONG)
+     */
+    private static final String VLOG_ID_MAPPING = "vlog:id:mapping";
 
     /**
      * 候选池大小（每个池取前100条）
@@ -52,6 +57,21 @@ public class VlogPoolServicePlanB extends VlogPoolService {
      * 新池权重
      */
     private static final double NEW_WEIGHT = 0.3;
+
+    @Override
+    public void loadVlogPoolData() {
+        super.loadVlogPoolData();
+        // 初始化视频ID映射表
+        log.info("init vlog pool service plan c");
+        List<Vlog> list = super.getVlogPoolData();
+        for (Vlog vlog : list) {
+            boolean hasKey = RedisKit.Hash.hasKey(VLOG_ID_MAPPING, vlog.getId());
+            if (!hasKey) {
+                long size = RedisKit.Hash.size(VLOG_ID_MAPPING);
+                RedisKit.Hash.set(VLOG_ID_MAPPING, vlog.getId(), size + 1);
+            }
+        }
+    }
 
     /**
      * 从视频池中获取用户没看过的视频ID列表
@@ -70,23 +90,16 @@ public class VlogPoolServicePlanB extends VlogPoolService {
 
         // 1. 获取用户偏移量和已看过的视频
         long offset = getOffset(userId);
-        Set<String> viewed = getUserViewedVlogs(userId);
-        log.info("offset: {}, viewed size: {}", offset, viewed.size());
-        timepiece.mark("get-offset: {}, viewed: {}", offset, viewed.size());
+        timepiece.mark("get-offset: {}", userId, offset);
 
         // 2. 获取热门池和新池的前100条视频
         Set<String> hoted = new HashSet<>(RedisKit.ZSet.range(VLOG_POOL_HOT, 0, CANDIDATE_POOL_SIZE));
         Set<String> newed = new HashSet<>(RedisKit.ZSet.range(VLOG_POOL_NEW, 0, CANDIDATE_POOL_SIZE));
-        // 去重：热门池和新池中都存在的视频
-        hoted.removeAll(viewed);
-        newed.removeAll(viewed);
-        timepiece.mark("remove-viewed: {}", viewed.size());
         // 计算热门池和新池的视频数量
         int hotCount = Math.min(hoted.size(), (int) Math.ceil(count * HOT_WEIGHT));
         int newCount = Math.min(newed.size(), (int) Math.ceil(count * NEW_WEIGHT));
-        // stream 转换为 List 并截取(可能会带来性能损耗, 后面可以改为朴实的for循环)
-        result.addAll(hoted.stream().toList().subList(0, hotCount));
-        result.addAll(newed.stream().toList().subList(0, newCount));
+        buildResultCandidates(userId, hoted, hotCount, result);
+        buildResultCandidates(userId, newed, newCount, result);
         timepiece.mark("get-hot&new-candidates: {}", result.size());
 
         // 3. 从偏移位置开始遍历时间线，跳过已看过的和已返回的视频，返回目标数量
@@ -97,7 +110,7 @@ public class VlogPoolServicePlanB extends VlogPoolService {
             fetched++;
             String vlogId = timeline.get(i);
             // 跳过已看过的或已返回的（去重）
-            if (viewed.contains(vlogId) || result.contains(vlogId)) {
+            if (isViewed(userId, vlogId) || result.contains(vlogId)) {
                 continue;
             }
             result.add(vlogId);
@@ -114,6 +127,18 @@ public class VlogPoolServicePlanB extends VlogPoolService {
 
         timepiece.show();
         return new ArrayList<>(result);
+    }
+
+    private void buildResultCandidates(String userId, Set<String> hoted, int hotCount, Set<String> result) {
+        for (String vlogId : hoted) {
+            if (hotCount <= 0) {
+                break;
+            }
+            if (!isViewed(userId, vlogId)) {
+                result.add(vlogId);
+                hotCount--;
+            }
+        }
     }
 
     /**
@@ -144,17 +169,6 @@ public class VlogPoolServicePlanB extends VlogPoolService {
     }
 
     /**
-     * 获取用户已看过的视频集合
-     *
-     * @param userId 用户ID
-     * @return 已看过的视频ID集合
-     */
-    private Set<String> getUserViewedVlogs(String userId) {
-        String key = VLOG_USER_VIEWED_PREFIX + userId;
-        return RedisKit.getClient().getSet(key);
-    }
-
-    /**
      * 记录用户已看过的视频
      *
      * @param userId  用户ID
@@ -165,6 +179,23 @@ public class VlogPoolServicePlanB extends VlogPoolService {
             return;
         }
         String key = VLOG_USER_VIEWED_PREFIX + userId;
-        RedisKit.Set.add(key, vlogIds);
+        for (String vlogId : vlogIds) {
+            int idx = RedisKit.Hash.get(VLOG_ID_MAPPING, vlogId);
+            RedisKit.Bitmap.set(key, idx, true);
+        }
+    }
+
+    /**
+     * 检查视频是否已被用户查看
+     *
+     * @param userId 用户ID
+     * @param vlogId 视频ID
+     * @return 是否已被用户查看
+     */
+    private boolean isViewed(String userId, String vlogId) {
+        // 从视频ID映射表中获取视频的索引
+        int idx = RedisKit.Hash.get(VLOG_ID_MAPPING, vlogId);
+        // 检查用户是否已查看该视频
+        return RedisKit.Bitmap.get(VLOG_USER_VIEWED_PREFIX + userId, idx);
     }
 }

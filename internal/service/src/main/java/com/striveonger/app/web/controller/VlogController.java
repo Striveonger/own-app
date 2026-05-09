@@ -2,6 +2,8 @@ package com.striveonger.app.web.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.striveonger.app.service.VlogPoolService;
+import com.striveonger.common.core.constant.ResultStatus;
+import com.striveonger.common.core.exception.OwnException;
 import com.striveonger.common.core.result.Result;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
@@ -24,13 +26,22 @@ public class VlogController {
     @Resource
     private VlogPoolService vlogPoolServicePlanB;
 
+    @Resource
+    private VlogPoolService vlogPoolServicePlanC;
+
     @GetMapping("/api/v1/vlog/list")
     public Result list(String userId, @RequestParam(defaultValue = "A") String plan) {
         log.info("get vlog list, plan: {}", plan);
         if (StrUtil.isBlank(userId)) {
             userId = "1";
         }
-        VlogPoolService service = "B".equalsIgnoreCase(plan) ? vlogPoolServicePlanB : vlogPoolServicePlanA;
+        // 选择计划对应的 VlogPoolService
+        VlogPoolService service = switch (plan.toUpperCase()) {
+            case "A" -> vlogPoolServicePlanA;
+            case "B" -> vlogPoolServicePlanB;
+            case "C" -> vlogPoolServicePlanC;
+            default -> throw new OwnException(ResultStatus.ACCIDENT, "plan not found");
+        };
         var list = service.list(userId);
         return Result.success().data(list);
     }
